@@ -68,7 +68,7 @@ inline void seek(int frame) {
 }
 
 inline std::filesystem::path macroPath() {
-    auto dir = Mod::get()->getSaveDir() / "macros";
+        auto dir = bot::toFs(Mod::get()->getSaveDir()) / "macros";
     std::error_code ec;
     std::filesystem::create_directories(dir, ec);
     return dir / (std::to_string(levelID) + ".macro");
