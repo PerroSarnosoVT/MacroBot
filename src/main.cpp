@@ -66,26 +66,24 @@ inline void seek(int frame) {
         [](Input const& i, int f) { return i.frame < f; }
     ) - macro.begin();
 }
-
-inline std::filesystem::path macroPath() {
-        auto dir = bot::toFs(Mod::get()->getSaveDir()) / "macros";
-    std::error_code ec;
-    std::filesystem::create_directories(dir, ec);
-    return dir / (std::to_string(levelID) + ".macro");
+inline std::string macroKey() {
+    return "macro-" + std::to_string(levelID);
 }
 
 inline bool save() {
-    std::ofstream out(macroPath(), std::ios::trunc);
-    if (!out) return false;
+    std::ostringstream out;
     out << "MACROBOT1\n";
     for (auto const& i : macro)
         out << i.frame << ' ' << i.button << ' ' << i.down << ' ' << i.player1 << '\n';
-    return static_cast<bool>(out);
+    Mod::get()->setSavedValue<std::string>(macroKey(), out.str());
+    return true;
 }
 
 inline bool load() {
-    std::ifstream in(macroPath());
-    if (!in) return false;
+    auto data = Mod::get()->getSavedValue<std::string>(macroKey());
+    if (data.empty()) return false;
+
+    std::istringstream in(data);
     std::string header;
     std::getline(in, header);
     if (header != "MACROBOT1") return false;
