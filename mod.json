@@ -1,0 +1,15 @@
+{
+	"geode": "6.0.0-alpha.1",
+	"gd": {
+		"win": "2.2091",
+		"android": "2.2091",
+		"mac": "2.2091",
+		"ios": "2.2091"
+	},
+	"version": "v1.0.0",
+	"id": "yourname.macrobot",
+	"name": "MacroBot",
+	"developer": "YourName",
+	"description": "Simple macro bot: record, replay, save and load inputs.",
+	"tags": ["gameplay", "utility"]
+}
