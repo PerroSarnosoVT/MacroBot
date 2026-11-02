@@ -34,9 +34,17 @@ inline int levelID = 0;
 
 // m_levelID is an int or a wrapper with .value() depending on bindings version.
 template <class T>
-int toInt(T const& v) {
+int toInt(T v) {
     if constexpr (requires { v.value(); }) return static_cast<int>(v.value());
     else return static_cast<int>(v);
+}
+
+template <class P>
+std::filesystem::path toFs(P const& p) {
+    if constexpr (std::is_convertible_v<P, std::filesystem::path>) return p;
+    else if constexpr (requires { p.toString(); }) return std::filesystem::path(std::string(p.toString()));
+    else if constexpr (requires { p.string(); }) return std::filesystem::path(std::string(p.string()));
+    else return std::filesystem::path(std::string(p.c_str()));
 }
 
 // If GD changes where the step counter lives, this is the only line to fix.
